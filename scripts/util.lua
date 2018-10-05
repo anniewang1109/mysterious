@@ -1,4 +1,4 @@
-local P = {
+P = {
 	images = {}
 }
 
@@ -8,3 +8,6 @@ function P.getImage(imageSource)
 	end
 	return P.images[imageSource]
 end
+
+
+return P

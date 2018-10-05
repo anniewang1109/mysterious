@@ -4,7 +4,7 @@ love.graphics.setDefaultFilter( "nearest" )
 io.stdout:setvbuf("no")
 
 --syntax for including/accessing another script
-require("scripts.util")
+util = require("scripts.util")
 
 --global num variable
 num = 0
@@ -27,10 +27,24 @@ end
 
 
 --update function called every frame
-function love.update()
+function love.update(dt)
 	num = num+1
 	--print with print function (like System.out.print, print in Python, etc.)
 	print(num)
+
+	--[[
+
+	An example of variables in Lua:
+
+	local table = {}
+	table["asdf"] = 1
+	table["qwer"] = {1, 2, 3}
+
+	local example = {}
+	table[-1] = example
+
+
+	]]
 end
 
 
@@ -38,4 +52,10 @@ end
 function love.draw()
 	--set background color
 	love.graphics.setBackgroundColor(240, 0, 0)
+
+	local character = util.getImage("graphics/herman.png")
+	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
+	--can take two more at end, but these are pretty irrelevant
+	love.graphics.draw(character, 100, 100, 0, 1, 1)
+
 end
