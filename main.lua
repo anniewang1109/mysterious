@@ -4,7 +4,7 @@ love.graphics.setDefaultFilter( "nearest" )
 io.stdout:setvbuf("no")
 
 --syntax for including/accessing another script
---require("myscript.lua")
+require("scripts.util")
 
 --global num variable
 num = 0
