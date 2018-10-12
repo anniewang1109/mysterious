@@ -52,13 +52,27 @@ function love.update(dt)
 
 	]]
 
-	local velX = 55
-	local velY = 55
-
-	if love.keyboard.isDown("up") then
+ 
+	local slowVelX = 80
+	local slowVelY = 80
+	local fastVelX = 190
+	local fastVelY = 190
+	local velX = 0;
+	local velX = 0;
+   
+   	--speed up if shift is down
+	if love.keyboard.isDown("lshift") then 
+		velX = fastVelX
+		velY = fastVelY
+	else
+		velX = slowVelX
+		velY = slowVelY
+	end
+	
+	if  love.keyboard.isDown("up") then
 		player.yCoord = player.yCoord - (velY * dt)
 	end
-	if love.keyboard.isDown("down") then
+	if  love.keyboard.isDown("down") then
 		player.yCoord = player.yCoord + (velY * dt)
 	end
 	if love.keyboard.isDown("left") then
