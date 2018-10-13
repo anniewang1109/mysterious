@@ -113,7 +113,7 @@ function love.draw()
 	end
 
 	--draw player
-	local playerSprite = util.getImage("graphics/herman.png")
+	local playerSprite = util.getImage("graphics/ghost.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
-		tileWidth/playerSprite:getWidth(), tileHeight/playerSprite:getHeight())
+		100/playerSprite:getWidth(), 100/playerSprite:getHeight())
 end
