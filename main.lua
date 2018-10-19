@@ -54,13 +54,13 @@ function love.update(dt)
 	]]
 
  
-	local slowVelX = 80
-	local slowVelY = 80
+	local slowVelX = 190
+	local slowVelY = 190
 	local fastVelX = 190
 	local fastVelY = 190
 	local velX = 0;
 	local velX = 0;
-   
+
    	--speed up if shift is down
 	if love.keyboard.isDown("lshift") then 
 		velX = fastVelX
@@ -153,4 +153,10 @@ function createTileMap(map)
 	end
 
 	return ret
+end
+
+function love.keypressed(key)
+	if key == "f" then
+		love.window.setFullscreen(not love.window.getFullscreen())
+	end
 end
