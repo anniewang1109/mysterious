@@ -93,7 +93,10 @@ function love.draw()
 	local roomWidth = 10
 	local roomHeight = 10
 
-	local tile = util.getImage("graphics/tile.png")
+	local tile = util.getImage("graphics/woodfloor.png")
+
+	local wall = util.getImage("graphics/wfrontwall.png")
+
 	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
 	--can take two more at end, but these are pretty irrelevant
 
@@ -105,12 +108,39 @@ function love.draw()
 	]]
 
 	-- equivalent of (for int row = 0; row < roomHeight; row++)
-	for row = 0, roomHeight-1 do
-		for col = 0, roomWidth-1 do
+	for row = 1, roomHeight do
+		for col = 1, roomWidth do
 			love.graphics.draw(tile, row*tileWidth, col*tileHeight, 0,
 				tileWidth/tile:getWidth(), tileHeight/tile:getHeight())
 		end
 	end
+
+	map = {
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+
+	}
+
+	for row = 1, roomHeight do
+		for col = 1, roomWidth do
+			if map[row][col] == 1 then
+			love.graphics.draw(wall, col*tileWidth, row*tileHeight, 0,
+				tileWidth/tile:getWidth(), tileHeight/tile:getHeight())
+			elseif map[row][col]== 0 then 
+			love.graphics.draw(tile, col*tileWidth, row*tileHeight, 0,
+				tileWidth/tile:getWidth(), tileHeight/tile:getHeight())
+			end
+		end
+	end
+
 
 	--draw player
 	local playerSprite = util.getImage("graphics/ghost.png")
