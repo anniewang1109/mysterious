@@ -54,8 +54,8 @@ function love.update(dt)
 	]]
 
  
-	local slowVelX = 190
-	local slowVelY = 190
+	local slowVelX = 80
+	local slowVelY = 80
 	local fastVelX = 190
 	local fastVelY = 190
 	local velX = 0;
