@@ -22,6 +22,15 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 
 
 
+function isMovableTile(type)
+	if type == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+
 function getTileCoord(x, y)
 	tempX = (math.floor(x/tileWidth)+1)
     tempY = (math.floor(y/tileHeight)+1)
@@ -29,27 +38,43 @@ function getTileCoord(x, y)
 	return {x=tempX, y=tempY}
 end
 
+
 function canMove(map, coords, direction)
 	--coords are tile coordinates
-	if (coords.x <= 1  or map[coords.y][coords.x-1]==1) and direction == "left" then
+	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
 		return false	
+	elseif (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
+		return false
 	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
 	and direction =="up" then
 		return false
-	elseif (coords.x >= 10 or map[coords.y][coords.x+1]==1) and direction == "right" then
+	elseif (coords.x >= 10 or isMovableTile(map[coords.y][coords.x+1])) and direction == "right" then
 		return false
-	elseif (coords.y >=10 or map[coords.y+1][coords.x]==1) and direction =="down" then
+	elseif (coords.y >=10 or isMovableTile(map[coords.y+1][coords.x])) and direction =="down" then
 		return false
 	else
 		return true
 	end
 end
 
+
 function canMoveTo(locX, locY)
+
 	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
+		local thisX = locX + hitboxPoint[1]
+		local thisY = locY + hitboxPoint[2]
 
-		if
+
+		local tc = getTileCoord(thisX, thisY)
+		if (tc.x <= 0 or tc.x > 10 or tc.y <= 0 or tc.y > 10) then
+			return false
+		else
+			local tileType = map[tc.y][tc.x]
+			if (not isMovableTile(tileType)) then
+				return false
+			end
+		end
 	end
 
 	return true
@@ -72,6 +97,7 @@ function love.load()
 			{10, 10},
 			{40, 40}
 		}
+
 	}
 
 end
@@ -104,7 +130,7 @@ function love.update(dt)
 	local velX = 0;
 
 --speed up if shift is down
-	if love.keyboard.isDown("lshift") then 
+	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
 		velY = fastVelY
 	else
@@ -112,22 +138,22 @@ function love.update(dt)
 		velY = slowVelY
 	end
 	if  love.keyboard.isDown("up") then
-		if (canMoveTo(player.xCoord, player.yCoord - velY) then
+		if (canMoveTo(player.xCoord, player.yCoord - velY)) then
 			player.yCoord = player.yCoord - (velY * dt)
 		end
 	end
 	if  love.keyboard.isDown("down") then
-		if (canMoveTo(player.xCoord, player.yCoord + velY) then
+		if (canMoveTo(player.xCoord, player.yCoord + velY)) then
 			player.yCoord = player.yCoord + (velY * dt)
 		end
 	end
 	if love.keyboard.isDown("left") then
-		if (canMoveTo(player.xCoord - velX, player.yCoord) then
+		if (canMoveTo(player.xCoord - velX, player.yCoord)) then
 			player.xCoord = player.xCoord - (velX * dt)
 		end
 	end
 	if love.keyboard.isDown("right") then
-		if (canMoveTo(player.xCoord + velX, player.yCoord) then
+		if (canMoveTo(player.xCoord + velX, player.yCoord)) then
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
@@ -137,7 +163,7 @@ end
 --draw function called every frame
 function love.draw()
 	--set background color
-	
+
 	tileWidth = 50
 	tileHeight = 50
 	local roomWidth = 10
@@ -146,6 +172,8 @@ function love.draw()
 	local tile = util.getImage("graphics/woodfloor.png")
 
 	local wall = util.getImage("graphics/wfrontwall.png")
+
+	local door = util.getImage("graphics/door.png")
 
 	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
 	--can take two more at end, but these are pretty irrelevant
@@ -159,9 +187,9 @@ function love.draw()
 
 
 	map = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-		{1, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
+		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
@@ -202,7 +230,7 @@ function love.draw()
 	end
 
 
-    
+
 end
 
 function createTileMap(map)
