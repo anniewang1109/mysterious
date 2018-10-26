@@ -22,6 +22,12 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 
 
 
+function isMovableTile(type)
+	if type == 1 then
+		return false
+	end
+
+
 function getTileCoord(x, y)
 	tempX = (math.floor(x/50)+1)
     tempY = (math.floor(y/50)+1)
@@ -31,7 +37,7 @@ end
 
 function canMove(map, coords, direction)
 	--coords are tile coordinates
-	if (coords.x <= 1  or map[coords.y][coords.x-1]==1) and direction == "left" then
+	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1]==1)) and direction == "left" then
 		return false	
 	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
 	and direction =="up" then
@@ -55,8 +61,8 @@ function love.load()
 		on map, yCoord comes first, then xCoord (different from player)
 	]]
 	player = {
-		xCoord = 50,
-		yCoord = 50,
+		xCoord = 150,
+		yCoord = 150,
 		inventory = {}
 	}
 
