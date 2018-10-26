@@ -31,14 +31,14 @@ end
 
 function canMove(map, coords, direction)
 	--coords are tile coordinates
-	if coords.x <= 1 and direction == "left" then
+	if (coords.x <= 1  or map[coords.y][coords.x-1]==1) and direction == "left" then
 		return false	
-	elseif (coords.y <= 1 or map[coords.x+1][coords.y]==1 )
+	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
 	and direction =="up" then
 		return false
-	elseif coords.x >= 10 and direction == "right" then
+	elseif (coords.x >= 10 or map[coords.y][coords.x+1]==1) and direction == "right" then
 		return false
-	elseif coords.y >=10 and direction =="down" then
+	elseif (coords.y >=10 or map[coords.y+1][coords.x]==1) and direction =="down" then
 		return false
 	else
 		return true
@@ -50,6 +50,10 @@ end
 function love.load()
 	--love.window.setMode(100, 100, {})
 
+	--[[
+		player xCoord/yCoord correspond to coordinates on-screen
+		on map, yCoord comes first, then xCoord (different from player)
+	]]
 	player = {
 		xCoord = 50,
 		yCoord = 50,
@@ -165,11 +169,20 @@ function love.draw()
 		end
 	end
 
+	for row = 1, roomHeight do
+		for col = 1, roomWidth do
+			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
+		end
+	end
+
 
 	--draw player
 	local playerSprite = util.getImage("graphics/ghost.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		100/playerSprite:getWidth(), 100/playerSprite:getHeight())
+	love.graphics.rectangle("line", player.xCoord, player.yCoord,
+		100, 100)
+
 
     
 end
