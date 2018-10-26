@@ -5,6 +5,7 @@ io.stdout:setvbuf("no")
 
 --syntax for including/accessing another script
 util = require("scripts.util")
+tiles = require("scripts.tiles")
 
 --global num variable
 num = 0
@@ -82,9 +83,8 @@ function love.update(dt)
 	local fastVelY = 190
 	local velX = 0;
 	local velX = 0;
-   
 
-   	--speed up if shift is down
+--speed up if shift is down
 	if love.keyboard.isDown("lshift") then 
 		velX = fastVelX
 		velY = fastVelY
@@ -138,13 +138,6 @@ function love.draw()
 	}
 	]]
 
-	-- equivalent of (for int row = 0; row < roomHeight; row++)
-	for row = 1, roomHeight do
-		for col = 1, roomWidth do
-			love.graphics.draw(tile, row*tileWidth, col*tileHeight, 0,
-				tileWidth/tile:getWidth(), tileHeight/tile:getHeight())
-		end
-	end
 
 	map = {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
@@ -154,21 +147,20 @@ function love.draw()
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
+		{0, 0, 2, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 2, 2, 0, 0, 1, 1, 1, 1},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
 	}
 
+	local tileMap = createTileMap(map)
+
+	-- equivalent of (for int row = 0; row < roomHeight; row++)
 	for row = 1, roomHeight do
 		for col = 1, roomWidth do
-			if map[row][col] == 1 then
-			love.graphics.draw(wall, col*tileWidth, row*tileHeight, 0,
-				tileWidth/tile:getWidth(), tileHeight/tile:getHeight())
-			elseif map[row][col]== 0 then 
-			love.graphics.draw(tile, col*tileWidth, row*tileHeight, 0,
-				tileWidth/tile:getWidth(), tileHeight/tile:getHeight())
-			end
+			local toDraw = tileMap[row][col]:getImage()
+			love.graphics.draw(toDraw, col*tileWidth, row*tileHeight, 0,
+				tileWidth/toDraw:getWidth(), tileHeight/toDraw:getHeight())
 		end
 	end
 
@@ -179,4 +171,24 @@ function love.draw()
 		100/playerSprite:getWidth(), 100/playerSprite:getHeight())
 
     
+end
+
+function createTileMap(map)
+	local ret = {}
+
+	for i = 1, #map do
+		ret[i] = {}
+		for j = 1, #map[i] do
+			local index = map[i][j]
+			ret[i][j] = tiles[index]:new()
+		end
+	end
+
+	return ret
+end
+
+function love.keypressed(key)
+	if key == "f" then
+		love.window.setFullscreen(not love.window.getFullscreen())
+	end
 end
