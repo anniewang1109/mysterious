@@ -33,7 +33,8 @@ function canMove(map, coords, direction)
 	--coords are tile coordinates
 	if coords.x <= 1 and direction == "left" then
 		return false	
-	elseif coords.y <= 1 and direction =="up" then
+	elseif (coords.y <= 1 or map[coords.x+1][coords.y]==1 )
+	and direction =="up" then
 		return false
 	elseif coords.x >= 10 and direction == "right" then
 		return false
@@ -119,8 +120,8 @@ end
 function love.draw()
 	--set background color
 	
-	local tileWidth = 50
-	local tileHeight = 50
+	tileWidth = 50
+	tileHeight = 50
 	local roomWidth = 10
 	local roomHeight = 10
 
