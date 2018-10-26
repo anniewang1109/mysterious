@@ -24,8 +24,11 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 
 function isMovableTile(type)
 	if type == 1 then
+		return true
+	else
 		return false
 	end
+end
 
 
 function getTileCoord(x, y)
@@ -37,14 +40,14 @@ end
 
 function canMove(map, coords, direction)
 	--coords are tile coordinates
-	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1]==1)) and direction == "left" then
+	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
 		return false	
-	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
+	elseif (coords.y <= 1 or isMovableTile(map[coords.y-1][coords.x]) )
 	and direction =="up" then
 		return false
-	elseif (coords.x >= 10 or map[coords.y][coords.x+1]==1) and direction == "right" then
+	elseif (coords.x >= 10 or isMovableTile(map[coords.y][coords.x+1])) and direction == "right" then
 		return false
-	elseif (coords.y >=10 or map[coords.y+1][coords.x]==1) and direction =="down" then
+	elseif (coords.y >=10 or isMovableTile(map[coords.y+1][coords.x])) and direction =="down" then
 		return false
 	else
 		return true
