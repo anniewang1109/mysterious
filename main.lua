@@ -23,8 +23,8 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 
 
 function getTileCoord(x, y)
-	tempX = (math.floor(x/50)+1)
-    tempY = (math.floor(y/50)+1)
+	tempX = (math.floor(x/tileWidth)+1)
+    tempY = (math.floor(y/tileHeight)+1)
 
 	return {x=tempX, y=tempY}
 end
@@ -45,6 +45,16 @@ function canMove(map, coords, direction)
 	end
 end
 
+function canMoveTo(locX, locY)
+	for i = 1, #player.hitbox do
+		local hitboxPoint = player.hitbox[i]
+
+		if
+	end
+
+	return true
+end
+
 
 --function that is called automatically on program load
 function love.load()
@@ -57,7 +67,11 @@ function love.load()
 	player = {
 		xCoord = 50,
 		yCoord = 50,
-		inventory = {}
+		inventory = {},
+		hitbox = {
+			{10, 10},
+			{40, 40}
+		}
 	}
 
 end
@@ -98,22 +112,22 @@ function love.update(dt)
 		velY = slowVelY
 	end
 	if  love.keyboard.isDown("up") then
-		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "up")) then
+		if (canMoveTo(player.xCoord, player.yCoord - velY) then
 			player.yCoord = player.yCoord - (velY * dt)
 		end
 	end
 	if  love.keyboard.isDown("down") then
-		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "down")) then
+		if (canMoveTo(player.xCoord, player.yCoord + velY) then
 			player.yCoord = player.yCoord + (velY * dt)
 		end
 	end
 	if love.keyboard.isDown("left") then
-		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "left")) then
+		if (canMoveTo(player.xCoord - velX, player.yCoord) then
 			player.xCoord = player.xCoord - (velX * dt)
 		end
 	end
 	if love.keyboard.isDown("right") then
-		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "right")) then
+		if (canMoveTo(player.xCoord + velX, player.yCoord) then
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
@@ -147,7 +161,7 @@ function love.draw()
 	map = {
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 
+		{1, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
@@ -179,9 +193,13 @@ function love.draw()
 	--draw player
 	local playerSprite = util.getImage("graphics/ghost.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
-		100/playerSprite:getWidth(), 100/playerSprite:getHeight())
-	love.graphics.rectangle("line", player.xCoord, player.yCoord,
-		100, 100)
+		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
+	for i = 1, 2 do
+		local hitboxPoint = player.hitbox[i]
+		local xDraw = hitboxPoint[1]+player.xCoord
+		local yDraw = hitboxPoint[2]+player.yCoord
+		love.graphics.circle("fill", xDraw, yDraw, 3, 3)
+	end
 
 
     
