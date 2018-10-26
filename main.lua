@@ -38,11 +38,15 @@ function getTileCoord(x, y)
 	return {x=tempX, y=tempY}
 end
 
+
 function canMove(map, coords, direction)
 	--coords are tile coordinates
 	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
 		return false	
 	elseif (coords.y <= 1 or isMovableTile(map[coords.y-1][coords.x]) )
+	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1]==1)) and direction == "left" then
+		return false
+	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
 	and direction =="up" then
 		return false
 	elseif (coords.x >= 10 or isMovableTile(map[coords.y][coords.x+1])) and direction == "right" then
@@ -53,7 +57,6 @@ function canMove(map, coords, direction)
 		return true
 	end
 end
-
 
 --function that is called automatically on program load
 function love.load()
@@ -99,7 +102,7 @@ function love.update(dt)
 	local velX = 0;
 
 --speed up if shift is down
-	if love.keyboard.isDown("lshift") then 
+	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
 		velY = fastVelY
 	else
@@ -132,7 +135,7 @@ end
 --draw function called every frame
 function love.draw()
 	--set background color
-	
+
 	tileWidth = 50
 	tileHeight = 50
 	local roomWidth = 10
@@ -141,6 +144,8 @@ function love.draw()
 	local tile = util.getImage("graphics/woodfloor.png")
 
 	local wall = util.getImage("graphics/wfrontwall.png")
+
+	local door = util.getImage("graphics/door.png")
 
 	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
 	--can take two more at end, but these are pretty irrelevant
@@ -154,9 +159,9 @@ function love.draw()
 
 
 	map = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 
+		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
@@ -193,7 +198,7 @@ function love.draw()
 		100, 100)
 
 
-    
+
 end
 
 function createTileMap(map)
