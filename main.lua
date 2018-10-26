@@ -21,13 +21,53 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 ]]
 
 
+
+function isMovableTile(type)
+	if type == 1 then
+		return true
+	else
+		return false
+	end
+end
+
+
+function getTileCoord(x, y)
+	tempX = (math.floor(x/50)+1)
+    tempY = (math.floor(y/50)+1)
+
+	return {x=tempX, y=tempY}
+end
+
+
+function canMove(map, coords, direction)
+	--coords are tile coordinates
+	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
+		return false	
+	elseif (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
+		return false
+	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
+	and direction =="up" then
+		return false
+	elseif (coords.x >= 10 or isMovableTile(map[coords.y][coords.x+1])) and direction == "right" then
+		return false
+	elseif (coords.y >=10 or isMovableTile(map[coords.y+1][coords.x])) and direction =="down" then
+		return false
+	else
+		return true
+	end
+end
+
 --function that is called automatically on program load
 function love.load()
 	--love.window.setMode(100, 100, {})
 
+	--[[
+		player xCoord/yCoord correspond to coordinates on-screen
+		on map, yCoord comes first, then xCoord (different from player)
+	]]
 	player = {
-		xCoord = 0,
-		yCoord = 0,
+		xCoord = 150,
+		yCoord = 150,
 		inventory = {}
 	}
 
@@ -53,7 +93,6 @@ function love.update(dt)
 
 	]]
 
- 
 	local slowVelX = 80
 	local slowVelY = 80
 	local fastVelX = 190
@@ -61,26 +100,33 @@ function love.update(dt)
 	local velX = 0;
 	local velX = 0;
 
-   	--speed up if shift is down
-	if love.keyboard.isDown("lshift") then 
+--speed up if shift is down
+	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
 		velY = fastVelY
 	else
 		velX = slowVelX
 		velY = slowVelY
 	end
-	
 	if  love.keyboard.isDown("up") then
-		player.yCoord = player.yCoord - (velY * dt)
+		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "up")) then
+			player.yCoord = player.yCoord - (velY * dt)
+		end
 	end
 	if  love.keyboard.isDown("down") then
-		player.yCoord = player.yCoord + (velY * dt)
+		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "down")) then
+			player.yCoord = player.yCoord + (velY * dt)
+		end
 	end
 	if love.keyboard.isDown("left") then
-		player.xCoord = player.xCoord - (velX * dt)
+		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "left")) then
+			player.xCoord = player.xCoord - (velX * dt)
+		end
 	end
 	if love.keyboard.isDown("right") then
-		player.xCoord = player.xCoord + (velX * dt)
+		if (canMove(map, getTileCoord(player.xCoord, player.yCoord), "right")) then
+			player.xCoord = player.xCoord + (velX * dt)
+		end
 	end
 end
 
@@ -88,15 +134,17 @@ end
 --draw function called every frame
 function love.draw()
 	--set background color
-	
-	local tileWidth = 50
-	local tileHeight = 50
+
+	tileWidth = 50
+	tileHeight = 50
 	local roomWidth = 10
 	local roomHeight = 10
 
 	local tile = util.getImage("graphics/woodfloor.png")
 
 	local wall = util.getImage("graphics/wfrontwall.png")
+
+	local door = util.getImage("graphics/door.png")
 
 	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
 	--can take two more at end, but these are pretty irrelevant
@@ -110,9 +158,9 @@ function love.draw()
 
 
 	map = {
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 
+		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+		{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
@@ -134,11 +182,22 @@ function love.draw()
 		end
 	end
 
+	for row = 1, roomHeight do
+		for col = 1, roomWidth do
+			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
+		end
+	end
+
 
 	--draw player
 	local playerSprite = util.getImage("graphics/ghost.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		100/playerSprite:getWidth(), 100/playerSprite:getHeight())
+	love.graphics.rectangle("line", player.xCoord, player.yCoord,
+		100, 100)
+
+
+
 end
 
 function createTileMap(map)
