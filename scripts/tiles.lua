@@ -19,7 +19,7 @@ end
 P.lamp = P.tile:new {
 }
 function P.lamp:getImage()
-	return util.getImage("graphics/lampTest.png")
+	return util.getImage("graphics/lamp.png")
 end
 
 P.door = P.tile:new {
