@@ -24,24 +24,25 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 
 function isMovableTile(type)
 	if type == 1 then
-		return true
-	else
 		return false
+	else
+		return true
 	end
 end
 
 
 function getTileCoord(x, y)
-	tempX = (math.floor(x/tileWidth)+1)
-    tempY = (math.floor(y/tileHeight)+1)
+	tempX = math.floor(x/tileWidth)
+    tempY = math.floor(y/tileHeight)
 
 	return {x=tempX, y=tempY}
 end
 
 
 function canMove(map, coords, direction)
+	return true
 	--coords are tile coordinates
-	if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
+	--[[if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
 		return false	
 	elseif (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
 		return false
@@ -54,12 +55,11 @@ function canMove(map, coords, direction)
 		return false
 	else
 		return true
-	end
+	end]]
 end
 
 
 function canMoveTo(locX, locY)
-
 	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
 		local thisX = locX + hitboxPoint[1]
@@ -68,10 +68,12 @@ function canMoveTo(locX, locY)
 
 		local tc = getTileCoord(thisX, thisY)
 		if (tc.x <= 0 or tc.x > 10 or tc.y <= 0 or tc.y > 10) then
+			print("aaa")
 			return false
 		else
 			local tileType = map[tc.y][tc.x]
 			if (not isMovableTile(tileType)) then
+				print(tc.y.." "..tc.x)
 				return false
 			end
 		end
@@ -138,22 +140,22 @@ function love.update(dt)
 		velY = slowVelY
 	end
 	if  love.keyboard.isDown("up") then
-		if (canMoveTo(player.xCoord, player.yCoord - velY)) then
+		if (canMoveTo(player.xCoord, player.yCoord - velY * dt)) then
 			player.yCoord = player.yCoord - (velY * dt)
 		end
 	end
 	if  love.keyboard.isDown("down") then
-		if (canMoveTo(player.xCoord, player.yCoord + velY)) then
+		if (canMoveTo(player.xCoord, player.yCoord + velY * dt)) then
 			player.yCoord = player.yCoord + (velY * dt)
 		end
 	end
 	if love.keyboard.isDown("left") then
-		if (canMoveTo(player.xCoord - velX, player.yCoord)) then
+		if (canMoveTo(player.xCoord - velX * dt, player.yCoord)) then
 			player.xCoord = player.xCoord - (velX * dt)
 		end
 	end
 	if love.keyboard.isDown("right") then
-		if (canMoveTo(player.xCoord + velX, player.yCoord)) then
+		if (canMoveTo(player.xCoord + velX * dt, player.yCoord)) then
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
@@ -184,7 +186,6 @@ function love.draw()
 		{tile4, tile5, tile6}
 	}
 	]]
-
 
 	map = {
 		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
@@ -222,14 +223,13 @@ function love.draw()
 	local playerSprite = util.getImage("graphics/ghost.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
-	for i = 1, 2 do
+
+	--[[for i = 1, 2 do
 		local hitboxPoint = player.hitbox[i]
 		local xDraw = hitboxPoint[1]+player.xCoord
 		local yDraw = hitboxPoint[2]+player.yCoord
 		love.graphics.circle("fill", xDraw, yDraw, 3, 3)
-	end
-
-
+	end]]
 
 end
 
