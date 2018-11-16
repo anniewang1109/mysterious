@@ -20,6 +20,22 @@ By default, variables in Lua are global and can be accessed from any file at any
 Use the keyword "local" when you don't want a global variable (i.e., most of the time)
 ]]
 
+<<<<<<< HEAD
+=======
+
+--[[
+	Anthony:
+	Here I'm iterating through each file in a new levels directory - I think it would be
+	best to have a bunch of level files and then set them after a door collision is detected.
+	This will make implementing the story, switching to and from puzzles, and cleaning our
+	code's structure much easier.
+]]
+maps = {}
+
+
+
+
+>>>>>>> 1a8f38c8da4518e272971ccd783f84112b1543be
 function isMovableTile(type)
 	if type == 1 then
 		return false
@@ -35,6 +51,30 @@ function getTileCoord(x, y)
 	return {x=tempX, y=tempY}
 end
 
+<<<<<<< HEAD
+=======
+
+function canMove(map, coords, direction)
+	return true
+	--coords are tile coordinates
+	--[[if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
+		return false
+	elseif (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
+		return false
+	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
+	and direction =="up" then
+		return false
+	elseif (coords.x >= 10 or isMovableTile(map[coords.y][coords.x+1])) and direction == "right" then
+		return false
+	elseif (coords.y >=10 or isMovableTile(map[coords.y+1][coords.x])) and direction =="down" then
+		return false
+	else
+		return true
+	end]]
+end
+
+
+>>>>>>> 1a8f38c8da4518e272971ccd783f84112b1543be
 function canMoveTo(locX, locY)
 	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
@@ -63,9 +103,16 @@ end
 function love.load()
 	--[[
 		Anthony:
+<<<<<<< HEAD
 		Here I'm iterating through each file in the levels directory and requiring each module by index.
 		Now the tilemap is globally available. TODO:
 		- Make each door in the level do something different
+=======
+		Here I'm iterating through each file in a new levels directory - I think it would be
+		best to have a bunch of level files and then set them after a door collision is detected.
+		This will make implementing the story, switching to and from puzzles, and cleaning our
+		code's structure much easier.
+>>>>>>> 1a8f38c8da4518e272971ccd783f84112b1543be
 	]]
 	-----------------------------------------------------
 	maps = {}
@@ -123,6 +170,8 @@ function love.update(dt)
 	local velX = 0;
 	local velX = 0;
 
+
+	local tcBefore = getTileCoord(player.xCoord, player.yCoord)
 --speed up if shift is down
 	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
@@ -151,6 +200,10 @@ function love.update(dt)
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
+	local tcAfter = getTileCoord(player.xCoord, player.yCoord)
+	if (tcBefore ~= tcAfter) then
+
+
 end
 
 
