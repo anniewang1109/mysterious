@@ -68,8 +68,7 @@ function canMoveTo(locX, locY)
 
 		local tc = getTileCoord(thisX, thisY)
 		if (tc.x <= 0 or tc.x > 10 or tc.y <= 0 or tc.y > 10) then
-			print("aaa")
-			return false
+			--return false
 		else
 			local tileType = map[tc.y][tc.x]
 			if (not isMovableTile(tileType)) then
@@ -96,8 +95,8 @@ function love.load()
 		yCoord = 50,
 		inventory = {},
 		hitbox = {
-			{10, 10},
-			{40, 40}
+			{10, 45},
+			{45, 45}
 		}
 
 	}
@@ -224,11 +223,13 @@ function love.draw()
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
 
-	--[[for i = 1, 2 do
+	--[[for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
 		local xDraw = hitboxPoint[1]+player.xCoord
 		local yDraw = hitboxPoint[2]+player.yCoord
+		love.graphics.setColor(255, 0, 0)
 		love.graphics.circle("fill", xDraw, yDraw, 3, 3)
+		love.graphics.setColor(255,255,255)
 	end]]
 
 end
