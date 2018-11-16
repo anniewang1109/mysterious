@@ -20,11 +20,6 @@ By default, variables in Lua are global and can be accessed from any file at any
 Use the keyword "local" when you don't want a global variable (i.e., most of the time)
 ]]
 
-
-
-
-
-
 function isMovableTile(type)
 	if type == 1 then
 		return false
@@ -39,27 +34,6 @@ function getTileCoord(x, y)
 
 	return {x=tempX, y=tempY}
 end
-
-
-function canMove(map, coords, direction)
-	return true
-	--coords are tile coordinates
-	--[[if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
-		return false	
-	elseif (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
-		return false
-	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
-	and direction =="up" then
-		return false
-	elseif (coords.x >= 10 or isMovableTile(map[coords.y][coords.x+1])) and direction == "right" then
-		return false
-	elseif (coords.y >=10 or isMovableTile(map[coords.y+1][coords.x])) and direction =="down" then
-		return false
-	else
-		return true
-	end]]
-end
-
 
 function canMoveTo(locX, locY)
 	for i = 1, #player.hitbox do
@@ -89,10 +63,9 @@ end
 function love.load()
 	--[[
 		Anthony:
-		Here I'm iterating through each file in a new levels directory - I think it would be
-		best to have a bunch of level files and then set them after a door collision is detected. 
-		This will make implementing the story, switching to and from puzzles, and cleaning our 
-		code's structure much easier.
+		Here I'm iterating through each file in the levels directory and requiring each module by index.
+		Now the tilemap is globally available. TODO:
+		- Make each door in the level do something different
 	]]
 	-----------------------------------------------------
 	maps = {}
@@ -183,17 +156,14 @@ end
 
 --draw function called every frame
 function love.draw()
-	--set background color
-
 	tileWidth = 50
 	tileHeight = 50
+
 	local roomWidth = 10
 	local roomHeight = 10
 
 	local tile = util.getImage("graphics/woodfloor.png")
-
 	local wall = util.getImage("graphics/wfrontwall.png")
-
 	local door = util.getImage("graphics/door.png")
 
 	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
