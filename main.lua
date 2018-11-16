@@ -21,24 +21,9 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 ]]
 
 
---[[
-	Anthony:
-	Here I'm iterating through each file in a new levels directory - I think it would be
-	best to have a bunch of level files and then set them after a door collision is detected. 
-	This will make implementing the story, switching to and from puzzles, and cleaning our 
-	code's structure much easier.
-]]
-maps = {}
 
-local dir = "levels"
-local files = love.filesystem.getDirectoryItems(dir)
-for i, file in ipairs(files) do
-	maps[i] = file
-end
 
-for i, level in ipairs(maps) do
-	print(level)
-end
+
 
 function isMovableTile(type)
 	if type == 1 then
@@ -47,7 +32,6 @@ function isMovableTile(type)
 		return true
 	end
 end
-
 
 function getTileCoord(x, y)
 	tempX = math.floor(x/tileWidth)
@@ -103,6 +87,23 @@ end
 
 --function that is called automatically on program load
 function love.load()
+	--[[
+		Anthony:
+		Here I'm iterating through each file in a new levels directory - I think it would be
+		best to have a bunch of level files and then set them after a door collision is detected. 
+		This will make implementing the story, switching to and from puzzles, and cleaning our 
+		code's structure much easier.
+	]]
+	-----------------------------------------------------
+	maps = {}
+
+	local dir = "levels"
+	local files = love.filesystem.getDirectoryItems(dir)
+	for i, file in ipairs(files) do
+		maps[i] = require("levels/"..file:match("(.+)%..+$"))
+	end
+	tileMap = createTileMap(maps[2])
+
 	--love.window.setMode(100, 100, {})
 
 	--[[
@@ -205,21 +206,20 @@ function love.draw()
 	}
 	]]
 
-	map = {
-		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 2, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 2, 2, 0, 0, 1, 1, 1, 1},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- map = {
+	-- 	{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 2, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 2, 2, 0, 0, 1, 1, 1, 1},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	-- }
 
-	}
-
-	local tileMap = createTileMap(map)
+	-- local tileMap = createTileMap(map)
 
 	-- equivalent of (for int row = 0; row < roomHeight; row++)
 	for row = 1, roomHeight do
@@ -253,7 +253,6 @@ end
 
 function createTileMap(map)
 	local ret = {}
-
 	for i = 1, #map do
 		ret[i] = {}
 		for j = 1, #map[i] do
