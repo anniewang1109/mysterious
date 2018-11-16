@@ -121,7 +121,7 @@ function love.update(dt)
 	local velX = 0;
 	local velX = 0;
 
-	local tcBefore = getTileCoord(player.xCoord, player.yCoord)
+	local tcBefore = getTileCoord(player.xCoord+35, player.yCoord+35)
 	--speed up if shift is down
 	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
@@ -150,9 +150,9 @@ function love.update(dt)
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
-	local tcAfter = getTileCoord(player.xCoord, player.yCoord)
-	if (tcBefore ~= tcAfter) then
-		--tileMap[tcAfter.y][tcAfter.x]:onEnter()
+	local tcAfter = getTileCoord(player.xCoord+35, player.yCoord+35)
+	if (tcBefore.x ~= tcAfter.x or tcBefore.y ~= tcAfter.y) then
+		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
 
 end
