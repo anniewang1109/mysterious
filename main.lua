@@ -20,6 +20,8 @@ By default, variables in Lua are global and can be accessed from any file at any
 Use the keyword "local" when you don't want a global variable (i.e., most of the time)
 ]]
 
+<<<<<<< HEAD
+=======
 
 --[[
 	Anthony:
@@ -33,6 +35,7 @@ maps = {}
 
 
 
+>>>>>>> 1a8f38c8da4518e272971ccd783f84112b1543be
 function isMovableTile(type)
 	if type == 1 then
 		return false
@@ -48,6 +51,8 @@ function getTileCoord(x, y)
 	return {x=tempX, y=tempY}
 end
 
+<<<<<<< HEAD
+=======
 
 function canMove(map, coords, direction)
 	return true
@@ -69,6 +74,7 @@ function canMove(map, coords, direction)
 end
 
 
+>>>>>>> 1a8f38c8da4518e272971ccd783f84112b1543be
 function canMoveTo(locX, locY)
 	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
@@ -97,10 +103,9 @@ end
 function love.load()
 	--[[
 		Anthony:
-		Here I'm iterating through each file in a new levels directory - I think it would be
-		best to have a bunch of level files and then set them after a door collision is detected.
-		This will make implementing the story, switching to and from puzzles, and cleaning our
-		code's structure much easier.
+		Here I'm iterating through each file in the levels directory and requiring each module by index.
+		Now the tilemap is globally available. TODO:
+		- Make each door in the level do something different
 	]]
 	-----------------------------------------------------
 	maps = {}
@@ -201,14 +206,18 @@ end
 
 --draw function called every frame
 function love.draw()
+<<<<<<< HEAD
 	--set background color
+=======
+	tileWidth = 50
+	tileHeight = 50
+
+>>>>>>> c6cf3ad5cdb7ec9429265e6ac85709271f6e4f16
 	local roomWidth = 10
 	local roomHeight = 10
 
 	local tile = util.getImage("graphics/woodfloor.png")
-
 	local wall = util.getImage("graphics/wfrontwall.png")
-
 	local door = util.getImage("graphics/door.png")
 
 	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
