@@ -118,6 +118,9 @@ function love.load()
 		player xCoord/yCoord correspond to coordinates on-screen
 		on map, yCoord comes first, then xCoord (different from player)
 	]]
+
+	tileWidth = 50
+	tileHeight = 50
 	player = {
 		xCoord = 50,
 		yCoord = 50,
@@ -190,7 +193,8 @@ function love.update(dt)
 	end
 	local tcAfter = getTileCoord(player.xCoord, player.yCoord)
 	if (tcBefore ~= tcAfter) then
-
+		tileMap[tcAfter.y][tcAfter.x]:onEnter()
+	end
 
 end
 
@@ -198,9 +202,6 @@ end
 --draw function called every frame
 function love.draw()
 	--set background color
-
-	tileWidth = 50
-	tileHeight = 50
 	local roomWidth = 10
 	local roomHeight = 10
 
