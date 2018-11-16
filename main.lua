@@ -22,6 +22,18 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 
 
 
+--[[
+	Anthony:
+	Here I'm iterating through each file in a new levels directory - I think it would be
+	best to have a bunch of level files and then set them after a door collision is detected.
+	This will make implementing the story, switching to and from puzzles, and cleaning our
+	code's structure much easier.
+]]
+maps = {}
+
+
+
+
 function isMovableTile(type)
 	if type == 1 then
 		return false
@@ -30,7 +42,6 @@ function isMovableTile(type)
 	end
 end
 
-
 function getTileCoord(x, y)
 	tempX = math.floor(x/tileWidth)
     tempY = math.floor(y/tileHeight)
@@ -38,41 +49,19 @@ function getTileCoord(x, y)
 	return {x=tempX, y=tempY}
 end
 
-
-function canMove(map, coords, direction)
-	return true
-	--coords are tile coordinates
-	--[[if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
-		return false	
-	elseif (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
-		return false
-	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
-	and direction =="up" then
-		return false
-	elseif (coords.x >= 10 or isMovableTile(map[coords.y][coords.x+1])) and direction == "right" then
-		return false
-	elseif (coords.y >=10 or isMovableTile(map[coords.y+1][coords.x])) and direction =="down" then
-		return false
-	else
-		return true
-	end]]
-end
-
-
 function canMoveTo(locX, locY)
 	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
 		local thisX = locX + hitboxPoint[1]
 		local thisY = locY + hitboxPoint[2]
 
-
 		local tc = getTileCoord(thisX, thisY)
+
 		if (tc.x <= 0 or tc.x > 10 or tc.y <= 0 or tc.y > 10) then
 			--return false
 		else
-			local tileType = map[tc.y][tc.x]
-			if (not isMovableTile(tileType)) then
-				print(tc.y.." "..tc.x)
+			local tile = tileMap[tc.y][tc.x]
+			if (tile:blocksMovement()) then
 				return false
 			end
 		end
@@ -84,12 +73,31 @@ end
 
 --function that is called automatically on program load
 function love.load()
+	--[[
+		Anthony:
+		Here I'm iterating through each file in the levels directory and requiring each module by index.
+		Now the tilemap is globally available. TODO:
+		- Make each door in the level do something different
+	]]
+	-----------------------------------------------------
+	maps = {}
+
+	local dir = "levels"
+	local files = love.filesystem.getDirectoryItems(dir)
+	for i, file in ipairs(files) do
+		maps[i] = require("levels/"..file:match("(.+)%..+$"))
+	end
+	tileMap = createTileMap(maps[1])
+
 	--love.window.setMode(100, 100, {})
 
 	--[[
 		player xCoord/yCoord correspond to coordinates on-screen
 		on map, yCoord comes first, then xCoord (different from player)
 	]]
+
+	tileWidth = 50
+	tileHeight = 50
 	player = {
 		xCoord = 50,
 		yCoord = 50,
@@ -106,23 +114,6 @@ end
 
 --update function called every frame
 function love.update(dt)
-	--print with print function (like System.out.print, print in Python, etc.)
-	--print(num)
-
-	--[[
-
-	An example of variables in Lua:
-
-	local table = {}
-	table["asdf"] = 1
-	table["qwer"] = {1, 2, 3}
-
-	local example = {}
-	table[-1] = example
-
-
-	]]
-
 	local slowVelX = 80
 	local slowVelY = 80
 	local fastVelX = 190
@@ -130,7 +121,8 @@ function love.update(dt)
 	local velX = 0;
 	local velX = 0;
 
---speed up if shift is down
+	local tcBefore = getTileCoord(player.xCoord, player.yCoord)
+	--speed up if shift is down
 	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
 		velY = fastVelY
@@ -158,22 +150,22 @@ function love.update(dt)
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
+	local tcAfter = getTileCoord(player.xCoord, player.yCoord)
+	if (tcBefore ~= tcAfter) then
+		--tileMap[tcAfter.y][tcAfter.x]:onEnter()
+	end
+
 end
 
 
 --draw function called every frame
 function love.draw()
 	--set background color
-
-	tileWidth = 50
-	tileHeight = 50
 	local roomWidth = 10
 	local roomHeight = 10
 
 	local tile = util.getImage("graphics/woodfloor.png")
-
 	local wall = util.getImage("graphics/wfrontwall.png")
-
 	local door = util.getImage("graphics/door.png")
 
 	--draw takes parameters: image, x, y, rotation, scaleX, scaleY
@@ -186,21 +178,20 @@ function love.draw()
 	}
 	]]
 
-	map = {
-		{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 2, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 2, 2, 0, 0, 1, 1, 1, 1},
-		{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- map = {
+	-- 	{0, 0, 0, 0, 0, 3, 0, 0, 0, 0},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{1, 1, 1, 0, 0, 1, 1, 1, 1, 1},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 2, 0, 0, 0, 0, 0, 0, 0},
+	-- 	{0, 0, 2, 2, 0, 0, 1, 1, 1, 1},
+	-- 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	-- }
 
-	}
-
-	local tileMap = createTileMap(map)
+	-- local tileMap = createTileMap(map)
 
 	-- equivalent of (for int row = 0; row < roomHeight; row++)
 	for row = 1, roomHeight do
@@ -223,20 +214,19 @@ function love.draw()
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
 
-	--[[for i = 1, #player.hitbox do
+	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
 		local xDraw = hitboxPoint[1]+player.xCoord
 		local yDraw = hitboxPoint[2]+player.yCoord
 		love.graphics.setColor(255, 0, 0)
 		love.graphics.circle("fill", xDraw, yDraw, 3, 3)
 		love.graphics.setColor(255,255,255)
-	end]]
+	end
 
 end
 
 function createTileMap(map)
 	local ret = {}
-
 	for i = 1, #map do
 		ret[i] = {}
 		for j = 1, #map[i] do
