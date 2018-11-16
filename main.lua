@@ -24,8 +24,8 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 --[[
 	Anthony:
 	Here I'm iterating through each file in a new levels directory - I think it would be
-	best to have a bunch of level files and then set them after a door collision is detected. 
-	This will make implementing the story, switching to and from puzzles, and cleaning our 
+	best to have a bunch of level files and then set them after a door collision is detected.
+	This will make implementing the story, switching to and from puzzles, and cleaning our
 	code's structure much easier.
 ]]
 maps = {}
@@ -61,7 +61,7 @@ function canMove(map, coords, direction)
 	return true
 	--coords are tile coordinates
 	--[[if (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
-		return false	
+		return false
 	elseif (coords.x <= 1  or isMovableTile(map[coords.y][coords.x-1])) and direction == "left" then
 		return false
 	elseif (coords.y <= 1 or map[coords.y-1][coords.x]==1 )
@@ -149,6 +149,8 @@ function love.update(dt)
 	local velX = 0;
 	local velX = 0;
 
+
+	local tcBefore = getTileCoord(player.xCoord, player.yCoord)
 --speed up if shift is down
 	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
@@ -177,6 +179,10 @@ function love.update(dt)
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
+	local tcAfter = getTileCoord(player.xCoord, player.yCoord)
+	if (tcBefore ~= tcAfter) then
+		
+
 end
 
 
