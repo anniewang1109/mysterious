@@ -29,7 +29,6 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 	This will make implementing the story, switching to and from puzzles, and cleaning our
 	code's structure much easier.
 ]]
-maps = {}
 
 
 
@@ -87,7 +86,7 @@ function love.load()
 	for i, file in ipairs(files) do
 		maps[i] = require("levels/"..file:match("(.+)%..+$"))
 	end
-	tileMap = createTileMap(maps[1])
+	tileMap = createTileMap(maps[1][1])
 
 	--love.window.setMode(100, 100, {})
 
@@ -155,6 +154,12 @@ function love.update(dt)
 		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
 
+	print("x: " .. getTileCoord(player.xCoord, player.yCoord).x .. ", y: " .. getTileCoord(player.xCoord, player.yCoord).y)
+
+	if(getTileCoord(player.xCoord, player.yCoord).x == maps[1][2].x and
+		(getTileCoord(player.xCoord, player.yCoord).y == maps[1][2].y)) then
+		print("TOUCHING DOOR")
+	end
 end
 
 
@@ -222,7 +227,7 @@ function love.draw()
 
 
 	--draw player
-	local playerSprite = util.getImage("graphics/ghost.png")
+	local playerSprite = util.getImage("graphics/RobinFrontFrame1.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
 
