@@ -73,6 +73,8 @@ end
 
 --function that is called automatically on program load
 function love.load()
+	createShader()
+	love.graphics.setShader(myShader)
 	--[[
 		Anthony:
 		Here I'm iterating through each file in the levels directory and requiring each module by index.
@@ -259,4 +261,19 @@ function love.keypressed(key)
 	if key == "f" then
 		love.window.setFullscreen(not love.window.getFullscreen())
 	end
+end
+
+function createShader()
+	myShader = love.graphics.newShader[[
+
+	vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
+	  	vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
+
+	  	pixel.r = pixel.r * 0.7;
+	  	pixel.g = pixel.g * 0.7;
+	  	pixel.b = pixel.b * 0.7;
+
+		return pixel;
+	}
+	]]
 end
