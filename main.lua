@@ -194,11 +194,23 @@ function love.draw()
 	-- local tileMap = createTileMap(map)
 
 	-- equivalent of (for int row = 0; row < roomHeight; row++)
+
+	--dra background
 	for row = 1, roomHeight do
 		for col = 1, roomWidth do
-			local toDraw = tileMap[row][col]:getImage()
+			local toDraw = util.getImage("graphics/woodfloor.png")
 			love.graphics.draw(toDraw, col*tileWidth, row*tileHeight, 0,
 				tileWidth/toDraw:getWidth(), tileHeight/toDraw:getHeight())
+		end
+	end
+
+	for row = 1, roomHeight do
+		for col = 1, roomWidth do
+			if tileMap[row][col].name ~= "blankTile" then
+				local toDraw = tileMap[row][col]:getImage()
+				love.graphics.draw(toDraw, col*tileWidth, row*tileHeight, 0,
+					tileWidth/toDraw:getWidth(), tileHeight/toDraw:getHeight())
+			end
 		end
 	end
 
