@@ -231,6 +231,7 @@ function love.draw()
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
 
+	--draw player hitbox for debugging
 	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
 		local xDraw = hitboxPoint[1]+player.xCoord
@@ -239,6 +240,9 @@ function love.draw()
 		love.graphics.circle("fill", xDraw, yDraw, 3, 3)
 		love.graphics.setColor(255,255,255)
 	end
+
+	--NPC
+	local npc = util.getImage("graphics/Regular\ Jack.png")
 
 end
 
