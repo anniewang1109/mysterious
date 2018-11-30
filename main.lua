@@ -108,8 +108,8 @@ function love.load()
 	tileWidth = 50
 	tileHeight = 50
 	player = {
-		xCoord = 50,
-		yCoord = 50,
+		xCoord = 300,
+		yCoord = 300,
 		inventory = {},
 		hitbox = {
 			{10, 45},
@@ -217,7 +217,7 @@ function love.draw()
 	--dra background
 	for row = 1, roomHeight do
 		for col = 1, roomWidth do
-			local toDraw = util.getImage("graphics/woodfloor.png")
+			local toDraw = util.getImage("graphics/darkfloor.png")
 			love.graphics.draw(toDraw, col*tileWidth, row*tileHeight, 0,
 				tileWidth/toDraw:getWidth(), tileHeight/toDraw:getHeight())
 		end
@@ -235,7 +235,7 @@ function love.draw()
 
 	for row = 1, roomHeight do
 		for col = 1, roomWidth do
-			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
+			--love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
 		end
 	end
 

@@ -42,7 +42,9 @@ function P.lamp:getImage()
 	end
 end
 function P.lamp:onEnter()
-	print("You are dead!")
+	if self.state == "on" then
+		print("You are dead!")
+	end
 end
 function P.lamp:toggleState()
 	if self.state == "on" then
