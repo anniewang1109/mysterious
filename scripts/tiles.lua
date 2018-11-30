@@ -13,6 +13,8 @@ end
 function P.tile:blocksMovement()
 	return false
 end
+function P.tile:onLoad()
+end
 
 P.blankTile = P.tile:new {
 	name = "blankTile"
@@ -29,13 +31,25 @@ function P.wall:blocksMovement()
 end
 
 P.lamp = P.tile:new {
-	name = "lamp"
+	name = "lamp",
+	state = "on"
 }
 function P.lamp:getImage()
-	return util.getImage("graphics/lamp.png")
+	if self.state == "on" then
+		return util.getImage("graphics/lamp.png")
+	elseif self.state == "off" then
+		return util.getImage("graphics/lampoff.png")
+	end
 end
 function P.lamp:onEnter()
 	print("You are dead!")
+end
+function P.lamp:toggleState()
+	if self.state == "on" then
+		self.state = "off"
+	elseif self.state == "off" then
+		self.state = "on"
+	end
 end
 
 P.door = P.tile:new {
@@ -47,7 +61,8 @@ end
 
 P.switch = P.tile:new {
 	name = "switch",
-	state = "off"
+	state = "off",
+	lampCoords = {0, 0}
 }
 function P.switch:getImage()
 	if self.state == "off" then
@@ -60,11 +75,19 @@ function P.switch:onEnter()
 	self:toggleState()
 end
 function P.switch:toggleState()
+	print(self.lampCoords[1])
+	print(self.lampCoords[2])
+	tileMap[self.lampCoords[1]][self.lampCoords[2]]:toggleState()
+
+
 	if self.state == "on" then
 		self.state = "off"
 	elseif self.state == "off" then
 		self.state = "on"
 	end
+end
+function P.switch:onLoad(y, x)
+	self.lampCoords = {y, x}
 end
 
 P[0] = P.blankTile

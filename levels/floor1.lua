@@ -10,4 +10,9 @@ map = {
 	{0, 2, 2, 2, 0, 0, 1, 1, 1, 1},
 	{0, 0, 0, 0, 0, 0, 1, 1, 1, 1}
 }
-return map
+
+connections = {
+	{7, 3, 9, 2}
+}
+
+return {thisMap = map, thisConnections = connections}

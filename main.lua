@@ -87,7 +87,12 @@ function love.load()
 	for i, file in ipairs(files) do
 		maps[i] = require("levels/"..file:match("(.+)%..+$"))
 	end
-	tileMap = createTileMap(maps[1])
+	tileMap = createTileMap(maps[1].thisMap)
+
+	for i = 1, #maps[1].thisConnections do
+		local connections = maps[1].thisConnections[i]
+		tileMap[connections[1]][connections[2]]:onLoad(connections[3], connections[4])
+	end
 
 	--love.window.setMode(100, 100, {})
 
