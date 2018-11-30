@@ -227,7 +227,7 @@ function love.draw()
 
 
 	--draw player
-	local playerSprite = util.getImage("graphics/ghost.png")
+	local playerSprite = util.getImage("graphics/RobinFrontFrame1.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
 
