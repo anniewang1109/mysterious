@@ -11,8 +11,17 @@ map = {
 	{0, 0, 0, 0, 0, 0, 1, 1, 1, 1}
 }
 
+
 connections = {
 	{7, 3, 9, 2}
 }
 
-return {thisMap = map, thisConnections = connections}
+door = {
+	x= 5,
+	y= 0
+}
+
+return {thisMap = map, thisConnections = connections, thisDoor = door}
+
+
+

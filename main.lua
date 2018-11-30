@@ -29,7 +29,6 @@ Use the keyword "local" when you don't want a global variable (i.e., most of the
 	This will make implementing the story, switching to and from puzzles, and cleaning our
 	code's structure much easier.
 ]]
-maps = {}
 
 
 
@@ -162,6 +161,12 @@ function love.update(dt)
 		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
 
+	--print("x: " .. getTileCoord(player.xCoord, player.yCoord).x .. ", y: " .. getTileCoord(player.xCoord, player.yCoord).y)
+
+	if(getTileCoord(player.xCoord, player.yCoord).x == maps[1].thisDoor.x and
+		(getTileCoord(player.xCoord, player.yCoord).y == maps[1].thisDoor.y)) then
+		--print("TOUCHING DOOR")
+	end
 end
 
 
@@ -229,10 +234,11 @@ function love.draw()
 
 
 	--draw player
-	local playerSprite = util.getImage("graphics/ghost.png")
+	local playerSprite = util.getImage("graphics/RobinFrontFrame1.png")
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
 
+	--draw player hitbox for debugging
 	for i = 1, #player.hitbox do
 		local hitboxPoint = player.hitbox[i]
 		local xDraw = hitboxPoint[1]+player.xCoord
@@ -241,6 +247,9 @@ function love.draw()
 		love.graphics.circle("fill", xDraw, yDraw, 3, 3)
 		love.graphics.setColor(255,255,255)
 	end
+
+	--NPC
+	local npc = util.getImage("graphics/Regular Jack.png")
 
 end
 
@@ -269,9 +278,9 @@ function createShader()
 	vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
 	  	vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
 
-	  	pixel.r = pixel.r * 0.7;
+	  	/*pixel.r = pixel.r * 0.7;
 	  	pixel.g = pixel.g * 0.7;
-	  	pixel.b = pixel.b * 0.7;
+	  	pixel.b = pixel.b * 0.7;*/
 
 		return pixel;
 	}

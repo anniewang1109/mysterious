@@ -75,8 +75,6 @@ function P.switch:onEnter()
 	self:toggleState()
 end
 function P.switch:toggleState()
-	print(self.lampCoords[1])
-	print(self.lampCoords[2])
 	tileMap[self.lampCoords[1]][self.lampCoords[2]]:toggleState()
 
 
