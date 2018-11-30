@@ -120,7 +120,7 @@ function love.update(dt)
 	local velX = 0;
 	local velX = 0;
 
-	local tcBefore = getTileCoord(player.xCoord, player.yCoord)
+	local tcBefore = getTileCoord(player.xCoord+35, player.yCoord+35)
 	--speed up if shift is down
 	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
@@ -149,9 +149,9 @@ function love.update(dt)
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
-	local tcAfter = getTileCoord(player.xCoord, player.yCoord)
-	if (tcBefore ~= tcAfter) then
-		--tileMap[tcAfter.y][tcAfter.x]:onEnter()
+	local tcAfter = getTileCoord(player.xCoord+35, player.yCoord+35)
+	if (tcBefore.x ~= tcAfter.x or tcBefore.y ~= tcAfter.y) then
+		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
 
 	print("x: " .. getTileCoord(player.xCoord, player.yCoord).x .. ", y: " .. getTileCoord(player.xCoord, player.yCoord).y)
@@ -199,11 +199,23 @@ function love.draw()
 	-- local tileMap = createTileMap(map)
 
 	-- equivalent of (for int row = 0; row < roomHeight; row++)
+
+	--dra background
 	for row = 1, roomHeight do
 		for col = 1, roomWidth do
-			local toDraw = tileMap[row][col]:getImage()
+			local toDraw = util.getImage("graphics/woodfloor.png")
 			love.graphics.draw(toDraw, col*tileWidth, row*tileHeight, 0,
 				tileWidth/toDraw:getWidth(), tileHeight/toDraw:getHeight())
+		end
+	end
+
+	for row = 1, roomHeight do
+		for col = 1, roomWidth do
+			if tileMap[row][col].name ~= "blankTile" then
+				local toDraw = tileMap[row][col]:getImage()
+				love.graphics.draw(toDraw, col*tileWidth, row*tileHeight, 0,
+					tileWidth/toDraw:getWidth(), tileHeight/toDraw:getHeight())
+			end
 		end
 	end
 
