@@ -242,7 +242,7 @@ function love.draw()
 	end
 
 	--NPC
-	local npc = util.getImage("graphics/Regular\ Jack.png")
+	local npc = util.getImage("graphics/Regular Jack.png")
 
 end
 
