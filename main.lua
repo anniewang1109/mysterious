@@ -83,6 +83,9 @@ function love.load()
 	-----------------------------------------------------
 	maps = {}
 
+	playerSprite = util.getImage("graphics/RobinFrontFrame1.png") --set image for playSprite
+
+
 	local dir = "levels"
 	local files = love.filesystem.getDirectoryItems(dir)
 	for i, file in ipairs(files) do
@@ -120,6 +123,8 @@ end
 
 --update function called every frame
 function love.update(dt)
+
+
 	local slowVelX = 80
 	local slowVelY = 80
 	local fastVelX = 190
@@ -137,11 +142,13 @@ function love.update(dt)
 		velY = slowVelY
 	end
 	if  love.keyboard.isDown("up") then
+	    playerSprite = util.getImage("graphics/RobinBackFrame1.png")
 		if (canMoveTo(player.xCoord, player.yCoord - velY * dt)) then
 			player.yCoord = player.yCoord - (velY * dt)
 		end
 	end
 	if  love.keyboard.isDown("down") then
+        playerSprite = util.getImage("graphics/RobinFrontFrame1.png")
 		if (canMoveTo(player.xCoord, player.yCoord + velY * dt)) then
 			player.yCoord = player.yCoord + (velY * dt)
 		end
@@ -234,7 +241,7 @@ function love.draw()
 
 
 	--draw player
-	local playerSprite = util.getImage("graphics/RobinFrontFrame1.png")
+
 	love.graphics.draw(playerSprite, player.xCoord, player.yCoord, 0,
 		50/playerSprite:getWidth(), 70/playerSprite:getHeight())
 
