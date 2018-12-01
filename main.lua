@@ -44,9 +44,11 @@ function love.load()
 	tileMap = createTileMap(currentMap.thisMap)
 
 	--Associate switches to lamps through connection data in level
-	for i = 1, #currentMap.thisConnections do
-		local connections = currentMap.thisConnections[i]
-		tileMap[connections[1]][connections[2]]:onLoad(connections[3], connections[4])
+	if currentMap.thisConnections ~= nil then
+		for i = 1, #currentMap.thisConnections do
+			local connections = currentMap.thisConnections[i]
+			tileMap[connections[1]][connections[2]]:onLoad(connections[3], connections[4])
+		end
 	end
 end
 
@@ -100,7 +102,7 @@ function love.update(dt)
 	------------------------------------------------------------------------------
 	-- if(getTileCoord(player.xCoord, player.yCoord).x == maps[1].thisDoor.x and
 	-- 	(getTileCoord(player.xCoord, player.yCoord).y == maps[1].thisDoor.y)) then
-	-- 	--print("TOUCHING DOOR")
+	-- 	print("TOUCHING DOOR")
 	-- end
 end
 

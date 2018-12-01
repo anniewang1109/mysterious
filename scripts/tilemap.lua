@@ -29,7 +29,7 @@ function canMoveTo(locX, locY)
 			--return false
 		else
 			local tile = tileMap[tc.y][tc.x]
-
+			
 			if (tile:blocksMovement()) then
 				return false
 			end

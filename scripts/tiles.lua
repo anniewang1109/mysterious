@@ -2,6 +2,7 @@
 
 --External scripts
 require('scripts.object')
+require('scripts.tilemap')
 
 --Table to be populated with tile data
 local P = {}
@@ -74,6 +75,14 @@ P.door = P.tile:new {
 }
 function P.door:getImage()
 	return util.getImage("graphics/door.png")
+end
+function P.door:onEnter()
+	curr = getTileCoord(player.xCoord, player.yCoord)
+	for i = 1, #currentMap.thisDoors do
+		if(curr.x == currentMap.thisDoors[i].x) then
+			print("Door " .. i .. " goes to " .. currentMap.thisDoors[i].goesTo)
+		end
+	end
 end
 
 --SWITCH TILE
