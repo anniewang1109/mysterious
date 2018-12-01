@@ -22,8 +22,8 @@ function love.load()
 		yCoord = 300,
 		inventory = {},
 		hitbox = {
-			{10, 45},
-			{45, 45}
+			{15, 45},
+			{35, 45}
 		}
 	}
 
@@ -99,11 +99,6 @@ function love.update(dt)
 	if (tcBefore.x ~= tcAfter.x or tcBefore.y ~= tcAfter.y) then
 		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
-	------------------------------------------------------------------------------
-	-- if(getTileCoord(player.xCoord, player.yCoord).x == maps[1].thisDoor.x and
-	-- 	(getTileCoord(player.xCoord, player.yCoord).y == maps[1].thisDoor.y)) then
-	-- 	print("TOUCHING DOOR")
-	-- end
 end
 
 function love.draw()
@@ -146,11 +141,11 @@ function love.draw()
 
 	--Uncomment to draw tile borders
 	--------------------------------
-	-- for row = 1, roomHeight do
-	-- 	for col = 1, roomWidth do
-	-- 		love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
-	-- 	end
-	-- end
+	for row = 1, roomHeight do
+		for col = 1, roomWidth do
+			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
+		end
+	end
 end
 
 --Fullscreen functionality
