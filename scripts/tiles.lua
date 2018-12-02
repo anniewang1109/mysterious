@@ -78,11 +78,14 @@ function P.door:getImage()
 end
 function P.door:onEnter()
 	curr = getTileCoord(player.xCoord, player.yCoord)
+	dest = 0
 	for i = 1, #currentMap.thisDoors do
 		if(curr.x == currentMap.thisDoors[i].x) then
 			print("Door " .. i .. " goes to " .. currentMap.thisDoors[i].goesTo)
+			dest = currentMap.thisDoors[i].goesTo
 		end
 	end
+	currentMap = maps[dest]
 end
 
 --SWITCH TILE
@@ -114,12 +117,23 @@ function P.switch:onLoad(y, x)
 	self.lampCoords = {y, x}
 end
 
+--STAIRCASE TILE
+P.stairs = P.tile:new {
+	name = "stairs"
+}
+function P.stairs:getImage()
+	return util.getImage("graphics/tile.png")
+end
+function P.stairs:onEnter()
+end
+
 --TILE INDICES
 P[0] = P.floor
 P[1] = P.wall
 P[2] = P.lamp
 P[3] = P.door
 P[4] = P.switch
+P[5] = P.stairs
 
 --Return tiles table
 return P
