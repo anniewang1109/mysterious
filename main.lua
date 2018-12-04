@@ -39,24 +39,7 @@ function love.load()
 		maps[i] = require("levels/"..file:match("(.+)%..+$"))
 	end
 
-
 	goToMap(1)
-end
-
-function goToMap(index)
-	print(index)
-	currentMap = maps[index]
-	tileMap = createTileMap(currentMap.thisMap)--Initial tileMap
-
-
-	--Associate switches to lamps through connection data in level
-	if currentMap.thisConnections ~= nil then
-		for i = 1, #currentMap.thisConnections do
-			local connections = currentMap.thisConnections[i]
-			local tile = tileMap[connections[1]][connections[2]]
-			tile:addConnection(connections[3], connections[4])
-		end
-	end
 end
 
 function love.update(dt)

@@ -75,15 +75,17 @@ function P.lamp:toggleState()
 end
 
 --DOOR TILE
+dest = 0
 P.door = P.tile:new {
 	name = "door"
 }
 function P.door:getImage()
 	return util.getImage("graphics/door.png")
 end
+
 function P.door:onEnter()
 	curr = getTileCoord(player.xCoord, player.yCoord)
-	dest = 0
+	
 	for i = 1, #currentMap.thisDoors do
 		if(curr.x == currentMap.thisDoors[i].x) then
 			print("Door " .. i .. " goes to " .. currentMap.thisDoors[i].goesTo)
@@ -92,7 +94,6 @@ function P.door:onEnter()
 	end
 	
 	goToMap(dest)
-
 end
 
 --SWITCH TILE
