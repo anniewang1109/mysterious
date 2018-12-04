@@ -18,7 +18,7 @@ connections = {
 }
 
 doors = {
-	{ x = 5, y = 0, goesTo = 1 }
+	{ x = 5, y = 1, goesTo = 1 }
 }
 
 return {thisMap = map, thisConnections = connections, thisDoors = doors}

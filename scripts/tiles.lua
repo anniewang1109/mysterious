@@ -8,7 +8,10 @@ require('scripts.tilemap')
 local P = {}
 
 --Tile object template
-P.tile = Object:new{ name = "tile" }
+P.tile = Object:new {
+	name = "tile",
+	lampCoords = {}
+}
 function P.tile:getImage()
 end
 function P.tile:onEnter()
@@ -16,6 +19,8 @@ end
 function P.tile:blocksMovement()
 end
 function P.tile:onLoad()
+end
+function P.tile:addConnection()
 end
 
 --FLOOR TILE
@@ -85,14 +90,16 @@ function P.door:onEnter()
 			dest = currentMap.thisDoors[i].goesTo
 		end
 	end
-	currentMap = maps[dest]
+	
+	goToMap(dest)
+
 end
 
 --SWITCH TILE
 P.switch = P.tile:new {
 	name = "switch",
 	state = "off",
-	lampCoords = { 0, 0 }
+	lampCoords = {}
 }
 function P.switch:getImage()
 	if self.state == "off" then
@@ -105,7 +112,9 @@ function P.switch:onEnter()
 	self:toggleState()
 end
 function P.switch:toggleState()
-	tileMap[self.lampCoords[1]][self.lampCoords[2]]:toggleState()
+	for i = 1, #self.lampCoords do
+		tileMap[self.lampCoords[i][1]][self.lampCoords[i][2]]:toggleState()
+	end
 
 	if self.state == "on" then
 		self.state = "off"
@@ -113,8 +122,12 @@ function P.switch:toggleState()
 		self.state = "on"
 	end
 end
-function P.switch:onLoad(y, x)
-	self.lampCoords = {y, x}
+function P.switch:addConnection(y, x)
+	if #self.lampCoords == 0 then
+		self.lampCoords = {}
+	end
+	
+	table.insert(self.lampCoords, {y, x})
 end
 
 --STAIRCASE TILE

@@ -39,15 +39,22 @@ function love.load()
 		maps[i] = require("levels/"..file:match("(.+)%..+$"))
 	end
 
-	--Initial tileMap
-	currentMap = maps[1]
-	tileMap = createTileMap(currentMap.thisMap)
+
+	goToMap(1)
+end
+
+function goToMap(index)
+	print(index)
+	currentMap = maps[index]
+	tileMap = createTileMap(currentMap.thisMap)--Initial tileMap
+
 
 	--Associate switches to lamps through connection data in level
 	if currentMap.thisConnections ~= nil then
 		for i = 1, #currentMap.thisConnections do
 			local connections = currentMap.thisConnections[i]
-			tileMap[connections[1]][connections[2]]:onLoad(connections[3], connections[4])
+			local tile = tileMap[connections[1]][connections[2]]
+			tile:addConnection(connections[3], connections[4])
 		end
 	end
 end
@@ -141,11 +148,11 @@ function love.draw()
 
 	--Uncomment to draw tile borders
 	--------------------------------
-	for row = 1, roomHeight do
+	--[[for row = 1, roomHeight do
 		for col = 1, roomWidth do
 			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
 		end
-	end
+	end]]
 end
 
 --Fullscreen functionality
