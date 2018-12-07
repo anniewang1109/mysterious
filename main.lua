@@ -54,10 +54,11 @@ function love.load()
 	local dir = "levels"
 	local files = love.filesystem.getDirectoryItems(dir)
 	for i, file in ipairs(files) do
-		maps[i] = require("levels/"..file:match("(.+)%..+$"))
+		print(file:match("(.+)%..+$"))
+		maps[file:match("(.+)%..+$")] = require("levels/"..file:match("(.+)%..+$"))
 	end
 
-	goToMap(1)
+	goToMap("floor1")
 end
 
 
