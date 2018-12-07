@@ -63,7 +63,8 @@ function P.lamp:getImage()
 end
 function P.lamp:onEnter()
 	if self.state == "on" then
-		print("You are dead!")
+		--print("You are dead!")
+		player.isDead = true
 	end
 end
 function P.lamp:toggleState()
@@ -85,7 +86,7 @@ end
 
 function P.door:onEnter()
 	curr = player:getTileCoord()
-	
+
 	for i = 1, #currentMap.thisDoors do
 		if(curr.x == currentMap.thisDoors[i].x and curr.y == currentMap.thisDoors[i].y) then
 			dest = currentMap.thisDoors[i].goesTo
