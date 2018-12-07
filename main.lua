@@ -72,11 +72,16 @@ function goToMap(index)
 		end
 	end
 
+	if oldMapIndex == nil then return end
+
 	--Position player at correct coordinates
 	for i = 1, #currentMap.thisDoors do
-		if currentMap.thisDoors[i].goesTo == oldMapIndex then
-			teleportToTile(currentMap.thisDoors[i].x, currentMap.thisDoors[i].y)
-			break
+		local entersFrom = currentMap.thisDoors[i].entersFrom
+		for j = 1, #entersFrom do
+			if entersFrom[j] == oldMapIndex then
+				teleportToTile(currentMap.thisDoors[i].x, currentMap.thisDoors[i].y)
+				break
+			end
 		end
 	end
 end
@@ -133,7 +138,6 @@ function love.update(dt)
 	
 	local tcAfter = player:getTileCoord()
 	if (tcBefore.x ~= tcAfter.x or tcBefore.y ~= tcAfter.y) then
-		print(tcBefore.y.." "..tcAfter.y)
 		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
 end

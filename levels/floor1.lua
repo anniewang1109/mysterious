@@ -12,8 +12,8 @@ map = {
 }
 
 doors = {
-	{ x = 7, y = 3, goesTo = "room1" },
-	{ x = 11, y = 4, goesTo = "room1" }
+	{ x = 7, y = 3, goesTo = "room1", entersFrom = {} },
+	{ x = 11, y = 4, goesTo = "", entersFrom = {"room3"} }
 }
 
 return {thisMap = map, thisDoors = doors}

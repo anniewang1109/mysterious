@@ -88,12 +88,11 @@ function P.door:onEnter()
 	
 	for i = 1, #currentMap.thisDoors do
 		if(curr.x == currentMap.thisDoors[i].x and curr.y == currentMap.thisDoors[i].y) then
-			print("Door " .. i .. " goes to " .. currentMap.thisDoors[i].goesTo)
 			dest = currentMap.thisDoors[i].goesTo
 		end
 	end
 	
-	if (dest ~= 0) then
+	if (dest ~= 0 and dest ~= "") then
 		goToMap(dest)
 	end
 

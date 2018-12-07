@@ -7,7 +7,7 @@ map = {
 	{0, 0, 4, 0, 0, 0, 0, 0, 0, 0},
 	{1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
 	{0, 4, 0, 2, 0, 0, 0, 0, 0, 0},
-	{1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+	{1, 1, 1, 1, 0, 0, 3, 0, 0, 0},
 	{0, 4, 0, 2, 0, 0, 0, 0, 0, 0}
 }
 
@@ -18,7 +18,8 @@ connections = {
 }
 
 doors = {
-	{ x = 5, y = 1, goesTo = "floor1" }
+	{ x = 7, y = 8, goesTo = "", entersFrom = {"floor1"}},
+	{ x = 5, y = 1, goesTo = "room2", entersFrom = {""} }
 }
 
 return {thisMap = map, thisConnections = connections, thisDoors = doors}
