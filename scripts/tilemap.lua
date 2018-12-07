@@ -16,6 +16,10 @@ function getTileCoord(x, y)
 	return {x=tempX, y=tempY}
 end
 
+function tileToCoords(x, y)
+	return {x = x * tileWidth, y = y * tileHeight}
+end
+
 --Determine whether a player can move to the location tile
 function canMoveTo(locX, locY)
 	for i = 1, #player.hitbox do

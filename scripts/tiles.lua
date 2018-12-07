@@ -85,13 +85,15 @@ function P.door:onEnter()
 	curr = getTileCoord(player.xCoord, player.yCoord)
 	dest = 0
 	for i = 1, #currentMap.thisDoors do
-		if(curr.x == currentMap.thisDoors[i].x) then
+		if(curr.x == currentMap.thisDoors[i].x and curr.y == currentMap.thisDoors[i].y) then
 			print("Door " .. i .. " goes to " .. currentMap.thisDoors[i].goesTo)
 			dest = currentMap.thisDoors[i].goesTo
 		end
 	end
 	
-	goToMap(dest)
+	if (dest ~= 0) then
+		goToMap(dest)
+	end
 
 end
 
@@ -126,7 +128,7 @@ function P.switch:addConnection(y, x)
 	if #self.lampCoords == 0 then
 		self.lampCoords = {}
 	end
-	
+
 	table.insert(self.lampCoords, {y, x})
 end
 

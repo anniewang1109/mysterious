@@ -44,9 +44,15 @@ function love.load()
 end
 
 function goToMap(index)
-	print(index)
 	currentMap = maps[index]
 	tileMap = createTileMap(currentMap.thisMap)--Initial tileMap
+
+	local oldMapIndex = nil
+	if mapIndex ~= nil then
+		oldMapIndex = mapIndex
+	end
+
+	mapIndex = index
 
 
 	--Associate switches to lamps through connection data in level
@@ -57,6 +63,20 @@ function goToMap(index)
 			tile:addConnection(connections[3], connections[4])
 		end
 	end
+
+	--Position player at correct coordinates
+	for i = 1, #currentMap.thisDoors do
+		if currentMap.thisDoors[i].goesTo == oldMapIndex then
+			teleportToTile(currentMap.thisDoors[i].x, currentMap.thisDoors[i].y)
+			break
+		end
+	end
+end
+
+function teleportToTile(x, y)
+	local newLoc = tileToCoords(x, y)
+	player.xCoord = newLoc.x
+	player.yCoord = newLoc.y
 end
 
 function love.update(dt)
