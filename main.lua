@@ -39,9 +39,9 @@ function love.load()
 		maps[i] = require("levels/"..file:match("(.+)%..+$"))
 	end
 
-
 	goToMap(1)
 end
+
 
 function goToMap(index)
 	currentMap = maps[index]
@@ -78,6 +78,7 @@ function teleportToTile(x, y)
 	player.xCoord = newLoc.x
 	player.yCoord = newLoc.y
 end
+
 
 function love.update(dt)
 	local slowVelX = 80

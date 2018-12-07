@@ -57,3 +57,20 @@ function createTileMap(map)
 
 	return ret
 end
+
+--Allow map switching
+function goToMap(index)
+	print(index)
+	currentMap = maps[index]
+	tileMap = createTileMap(currentMap.thisMap)--Initial tileMap
+
+
+	--Associate switches to lamps through connection data in level
+	if currentMap.thisConnections ~= nil then
+		for i = 1, #currentMap.thisConnections do
+			local connections = currentMap.thisConnections[i]
+			local tile = tileMap[connections[1]][connections[2]]
+			tile:addConnection(connections[3], connections[4])
+		end
+	end
+end
