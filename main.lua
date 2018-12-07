@@ -20,12 +20,30 @@ function love.load()
 	player = {
 		xCoord = 300,
 		yCoord = 300,
+		spritePos = "forward",
 		inventory = {},
 		hitbox = {
-			{15, 45},
-			{35, 45}
+			{15, 50},
+			{35, 50},
+			{30, 75}
 		}
 	}
+	function player:getTileCoord()
+		tempX = math.floor((self.xCoord+30)/tileWidth)
+		tempY = math.floor((self.yCoord+50)/tileHeight)
+
+		return {x=tempX, y=tempY}
+	end
+
+    function player:getPlayerSprite()
+        if self.spritePos == "forward" then
+            tempplayerSprite = util.getImage("graphics/RobinFrontFrame1.png")
+		elseif self.spritePos == "back" then
+            tempplayerSprite = util.getImage("graphics/RobinBackFrame1.png")
+		end
+		return tempplayerSprite
+	end
+	
 
 	--NPC sprite
 	npc = util.getImage("graphics/Regular Jack.png")
@@ -36,10 +54,11 @@ function love.load()
 	local dir = "levels"
 	local files = love.filesystem.getDirectoryItems(dir)
 	for i, file in ipairs(files) do
-		maps[i] = require("levels/"..file:match("(.+)%..+$"))
+		print(file:match("(.+)%..+$"))
+		maps[file:match("(.+)%..+$")] = require("levels/"..file:match("(.+)%..+$"))
 	end
 
-	goToMap(1)
+	goToMap("floor1")
 end
 
 
@@ -76,7 +95,7 @@ end
 function teleportToTile(x, y)
 	local newLoc = tileToCoords(x, y)
 	player.xCoord = newLoc.x
-	player.yCoord = newLoc.y
+	player.yCoord = newLoc.y+tileHeight-51
 end
 
 
@@ -88,7 +107,8 @@ function love.update(dt)
 	local velX = 0
 	local velX = 0
 
-	local tcBefore = getTileCoord(player.xCoord+35, player.yCoord+35)
+	local tcBefore = player:getTileCoord()
+	playerSprite = player:getPlayerSprite()
 	
 	--Speed up when shift is pressed
 	if love.keyboard.isDown("lshift") then
@@ -101,13 +121,13 @@ function love.update(dt)
 
 	--Arrow keys for movement
 	if love.keyboard.isDown("up") then
-	    playerSprite = util.getImage("graphics/RobinBackFrame1.png")
+	    player.spritePos = "back"
 		if (canMoveTo(player.xCoord, player.yCoord - velY * dt)) then
 			player.yCoord = player.yCoord - (velY * dt)
 		end
 	end
 	if love.keyboard.isDown("down") then
-        playerSprite = util.getImage("graphics/RobinFrontFrame1.png")
+        player.spritePos = "forward"
 		if (canMoveTo(player.xCoord, player.yCoord + velY * dt)) then
 			player.yCoord = player.yCoord + (velY * dt)
 		end
@@ -123,8 +143,9 @@ function love.update(dt)
 		end
 	end
 	
-	local tcAfter = getTileCoord(player.xCoord+35, player.yCoord+35)
+	local tcAfter = player:getTileCoord()
 	if (tcBefore.x ~= tcAfter.x or tcBefore.y ~= tcAfter.y) then
+		print(tcBefore.y.." "..tcAfter.y)
 		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
 end
@@ -169,11 +190,11 @@ function love.draw()
 
 	--Uncomment to draw tile borders
 	--------------------------------
-	--[[for row = 1, roomHeight do
+	for row = 1, roomHeight do
 		for col = 1, roomWidth do
 			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
 		end
-	end]]
+	end
 end
 
 --Fullscreen functionality
