@@ -22,10 +22,17 @@ function love.load()
 		yCoord = 300,
 		inventory = {},
 		hitbox = {
-			{15, 45},
-			{35, 45}
+			{15, 50},
+			{35, 50},
+			{30, 75}
 		}
 	}
+	function player:getTileCoord()
+		tempX = math.floor((self.xCoord+30)/tileWidth)
+		tempY = math.floor((self.yCoord+50)/tileHeight)
+
+		return {x=tempX, y=tempY}
+	end
 
 	--NPC sprite
 	npc = util.getImage("graphics/Regular Jack.png")
@@ -76,7 +83,7 @@ end
 function teleportToTile(x, y)
 	local newLoc = tileToCoords(x, y)
 	player.xCoord = newLoc.x
-	player.yCoord = newLoc.y
+	player.yCoord = newLoc.y-20
 end
 
 
@@ -88,7 +95,7 @@ function love.update(dt)
 	local velX = 0
 	local velX = 0
 
-	local tcBefore = getTileCoord(player.xCoord+35, player.yCoord+35)
+	local tcBefore = player:getTileCoord()
 	
 	--Speed up when shift is pressed
 	if love.keyboard.isDown("lshift") then
@@ -123,8 +130,9 @@ function love.update(dt)
 		end
 	end
 	
-	local tcAfter = getTileCoord(player.xCoord+35, player.yCoord+35)
+	local tcAfter = player:getTileCoord()
 	if (tcBefore.x ~= tcAfter.x or tcBefore.y ~= tcAfter.y) then
+		print(tcBefore.y.." "..tcAfter.y)
 		tileMap[tcAfter.y][tcAfter.x]:onEnter()
 	end
 end
@@ -169,11 +177,11 @@ function love.draw()
 
 	--Uncomment to draw tile borders
 	--------------------------------
-	--[[for row = 1, roomHeight do
+	for row = 1, roomHeight do
 		for col = 1, roomWidth do
 			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
 		end
-	end]]
+	end
 end
 
 --Fullscreen functionality

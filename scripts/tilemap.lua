@@ -29,8 +29,8 @@ function canMoveTo(locX, locY)
 
 		local tc = getTileCoord(thisX, thisY)
 
-		if (tc.x <= 0 or tc.x > 10 or tc.y <= 0 or tc.y > 10) then
-			--return false
+		if (tc.x <= 0 or tc.x > #tileMap[1] or tc.y <= 0 or tc.y > #tileMap) then
+			return false
 		else
 			local tile = tileMap[tc.y][tc.x]
 			

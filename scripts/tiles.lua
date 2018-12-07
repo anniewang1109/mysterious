@@ -84,7 +84,7 @@ function P.door:getImage()
 end
 
 function P.door:onEnter()
-	curr = getTileCoord(player.xCoord, player.yCoord)
+	curr = player:getTileCoord()
 	
 	for i = 1, #currentMap.thisDoors do
 		if(curr.x == currentMap.thisDoors[i].x and curr.y == currentMap.thisDoors[i].y) then
