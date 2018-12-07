@@ -26,7 +26,8 @@ function love.load()
 			{15, 50},
 			{35, 50},
 			{30, 75}
-		}
+		},
+		isDead = false
 	}
 	function player:getTileCoord()
 		tempX = math.floor((self.xCoord+30)/tileWidth)
@@ -194,6 +195,7 @@ function love.draw()
 
 	if player.isDead then
 		goToMap("floor1")
+		player.isDead = false
 	end
 	--Uncomment to draw tile borders
 	--------------------------------
