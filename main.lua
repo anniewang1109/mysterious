@@ -177,11 +177,11 @@ function love.draw()
 
 	--Uncomment to draw tile borders
 	--------------------------------
-	for row = 1, roomHeight do
+	--[[for row = 1, roomHeight do
 		for col = 1, roomWidth do
 			love.graphics.rectangle("line", col*tileWidth, row*tileHeight, tileWidth, tileHeight)
 		end
-	end
+	end]]
 end
 
 --Fullscreen functionality
