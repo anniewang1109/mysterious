@@ -108,12 +108,8 @@ function love.update(dt)
 	local velX = 0
 
 	local tcBefore = player:getTileCoord()
-<<<<<<< HEAD
+    playerSprite = player:getPlayerSprite()
 
-=======
-	playerSprite = player:getPlayerSprite()
-	
->>>>>>> c46458345e7dbf9b33f8042c740fb6bada21861c
 	--Speed up when shift is pressed
 	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
