@@ -97,7 +97,7 @@ function love.update(dt)
 	local velX = 0
 
 	local tcBefore = player:getTileCoord()
-	
+
 	--Speed up when shift is pressed
 	if love.keyboard.isDown("lshift") then
 		velX = fastVelX
@@ -130,7 +130,7 @@ function love.update(dt)
 			player.xCoord = player.xCoord + (velX * dt)
 		end
 	end
-	
+
 	local tcAfter = player:getTileCoord()
 	if (tcBefore.x ~= tcAfter.x or tcBefore.y ~= tcAfter.y) then
 		print(tcBefore.y.." "..tcAfter.y)
@@ -176,6 +176,9 @@ function love.draw()
 		love.graphics.setColor(255,255,255)
 	end
 
+	if player.isDead then
+		goToMap("floor1")
+	end
 	--Uncomment to draw tile borders
 	--------------------------------
 	for row = 1, roomHeight do
