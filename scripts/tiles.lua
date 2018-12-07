@@ -43,7 +43,7 @@ P.wall = P.tile:new {
 	name = "wall"
 }
 function P.wall:getImage()
-	return util.getImage("graphics/wfrontwall.png")
+	return util.getImage("graphics/darkwall.png")
 end
 function P.wall:blocksMovement()
 	return true
