@@ -83,7 +83,7 @@ end
 function teleportToTile(x, y)
 	local newLoc = tileToCoords(x, y)
 	player.xCoord = newLoc.x
-	player.yCoord = newLoc.y-20
+	player.yCoord = newLoc.y+tileHeight-51
 end
 
 
