@@ -40,10 +40,15 @@ end
 
 --WALL TILE
 P.wall = P.tile:new {
-	name = "wall"
+	name = "wall",
+	state = "forward"
 }
 function P.wall:getImage()
-	return util.getImage("graphics/darkwall.png")
+    if self.state == "forward" then
+		return util.getImage("graphics/darkwall.png")
+	elseif self.state == "side" then
+		return util.getImage("graphics/darkvert.png")
+	end
 end
 function P.wall:blocksMovement()
 	return true
