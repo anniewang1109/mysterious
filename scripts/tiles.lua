@@ -149,7 +149,15 @@ end
 function P.stairs:onEnter()
 end
 
+P.vWall = P.wall:new {
+	
+}
+function P.vWall:getImage()
+	return util.getImage("graphics/darkvert.png")
+end
+
 --TILE INDICES
+P[-1] = P.vWall
 P[0] = P.floor
 P[1] = P.wall
 P[2] = P.lamp
